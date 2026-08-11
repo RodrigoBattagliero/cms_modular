@@ -6,7 +6,6 @@ use App\DTO\ArticleDto;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\User;
-use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
