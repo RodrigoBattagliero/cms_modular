@@ -4,15 +4,20 @@ namespace App\Service;
 
 use App\DTO\ArticleDto;
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\User;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ArticleService
 {
 
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private SluggerInterface $slugger
     )
     {
     }
@@ -37,13 +42,24 @@ class ArticleService
         if (!$author) {
             throw new Exception('Author not found');
         }
+
         $article = new Article();
         
         $article->setTitle($dto->title)
             ->setContent($dto->content)
             ->setAuthor($author)
             ->setSlug($this->generateSlug($dto->title))
+            ->setCreateAt(new DateTimeImmutable())
             ;
+
+        
+        foreach ($dto->categories as $catId) {
+            $category = $this->em->getRepository(Category::class)->findOneBy(['id' => $catId]);
+            if (!$category) {
+                throw new Exception('category '.$catId.' not found');
+            }
+            $article->addCategory($category);
+        }
 
         $this->em->persist($article);
         $this->em->flush();
@@ -53,7 +69,7 @@ class ArticleService
 
     private function generateSlug(string $txt): string
     {
-        return $txt;
+        return $this->slugger->slug($txt)->lower();
     }
 
     public function edit(int $id, ArticleDto $dto): Article
@@ -72,6 +88,19 @@ class ArticleService
             ->setContent($dto->content)
             ->setAuthor($author)
             ->setSlug($this->generateSlug($dto->title));
+
+        
+        foreach ($article->getCategories() as $cat) {
+            $article->removeCategory($cat);
+        }
+        foreach ($dto->categories as $catId) {
+            $category = $this->em->getRepository(Category::class)->findOneBy(['id' => $catId]);
+            if (!$category) {
+                throw new Exception('category '.$catId.' not found');
+            }
+            $article->addCategory($category);
+        }
+
         $this->em->persist($article);
         $this->em->flush();
 

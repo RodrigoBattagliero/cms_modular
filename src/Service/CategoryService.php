@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DTO\CategoryDto;
+use App\Entity\Article;
 use App\Entity\Category;
 use App\Mapper\CategoryMapper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,6 +62,11 @@ class CategoryService
         $category = $this->em->getRepository(Category::class)->findOneBy(['id' => $id]);
         if (!$category) {
             throw new Exception('Category not found');
+        }
+        $articles = $this->em->getRepository(Article::class)->findByCategory($category);
+        
+        if ($articles) {
+            throw new Exception('Category has articles');
         }
         $this->em->remove($category);
         $this->em->flush();
