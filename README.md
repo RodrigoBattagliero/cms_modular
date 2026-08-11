@@ -37,11 +37,10 @@ Body:
 
 ```json
 {
-    "title": "tit 2",
-    "content": "desc",
+    "name": "Rodrigo",
+    "email": "rodrigo@test.com",
     "status": true,
-    "author_id": 2,
-    "categories": [3, 2]
+    "rol": 1
 }
 ```
 
@@ -51,11 +50,10 @@ Body:
 
 ```json
 {
-    "title": "tit 2",
-    "content": "desc",
+    "name": "Rodrigo",
+    "email": "rodrigo@test.com",
     "status": true,
-    "author_id": 2,
-    "categories": [3, 2]
+    "rol": 1
 }
 ```
 
