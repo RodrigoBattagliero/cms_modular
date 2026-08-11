@@ -12,9 +12,9 @@ In order to proceed with the instalation, you need to have these packages instal
 ### Install
 
 ```bash
-git clone https://github.com/RodrigoBattagliero/.git
+git clone https://github.com/RodrigoBattagliero/cms_modular
 
-cd /
+cd cms_modular/
 
 composer install
 
