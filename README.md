@@ -12,7 +12,7 @@ In order to proceed with the instalation, you need to have these packages instal
 ### Install
 
 ```bash
-git clone https://github.com/RodrigoBattagliero/cms_modular
+git clone https://github.com/RodrigoBattagliero/cms_modular.git
 
 cd cms_modular/
 
